@@ -8,11 +8,25 @@ const initialState = {
   advantage: null,
   winner: null,
   playing: true,
+  history: [],
 };
 
 function reducer(state = initialState, action) {
   if (action.type === 'restart') {
-    return initialState;
+    return produce(state, (draft) => {
+      if (draft.winner) {
+        draft.history.push({
+          player1: draft.player1,
+          player2: draft.player2,
+          winner: draft.winner,
+        });
+      }
+      draft.player1 = 0;
+      draft.player2 = 0;
+      draft.advantage = null;
+      draft.winner = null;
+      draft.playing = true;
+    });
   }
   if (action.type === 'playPause') {
     if (state.winner) {
