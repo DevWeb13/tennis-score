@@ -21,6 +21,7 @@ export const autoPlay = (store) => {
     // Déjà entrain de jouer, on ne fait rien
     return;
   }
+
   // on indique que la partie est en cours
   store.dispatch(setPlaying(true));
   playNextPoint();
@@ -41,9 +42,10 @@ export const autoPlay = (store) => {
       // si oui on marque un point aléatoire
       const pointWinner = Math.random() > 0.5 ? 'player1' : 'player2';
       store.dispatch(pointScored(pointWinner));
-      // on remet le jeu en pause
+      //on reiniialise le jeu si le joueur a gagné
       if (store.getState().winner) {
-        store.dispatch(setPlaying(false));
+        store.dispatch(restartGame());
+
         return;
       }
       playNextPoint();
